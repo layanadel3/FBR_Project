@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Website</title>
+  <!-- ربط CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  
+  <h2 id="question">Loading question...</h2>
+
+  <div class="options">
+    <button class="option-btn" id="opt1"></button>
+    <button class="option-btn" id="opt2"></button>
+    <button class="option-btn" id="opt3"></button>
+    <button class="option-btn" id="opt4"></button>
+  </div>
+
+  <div id="result"></div>
+
+  <script>
+    const questions = [
+      { q: "Is fire hot?", options: ["Yes","No"], correct: 0 },
+      { q: "Water freezes at 0°C?", options: ["Yes","No"], correct: 0 }
+    ];
+
+    let current = 0;
+    let correctCount = 0;
+    let wrongCount = 0;
+
+    const questionEl = document.getElementById("question");
+    const resultEl = document.getElementById("result");
+    const optionBtns = [
+      document.getElementById("opt1"),
+      document.getElementById("opt2"),
+     
+    ];
+
+    function loadQuestion() {
+      const q = questions[current];
+      questionEl.textContent = q.q;
+      optionBtns.forEach((btn,i) => {
+        btn.textContent = q.options[i];
+        btn.className = "option-btn"; // إعادة ضبط اللون
+        btn.disabled = false;
+      });
+    }
+
+    function checkAnswer(index) {
+      const correctIndex = questions[current].correct;
+      if(index === correctIndex) {
+        optionBtns[index].classList.add("correct");
+        correctCount++;
+      } else {
+        optionBtns[index].classList.add("wrong");
+        optionBtns[correctIndex].classList.add("correct"); // يظهر الصحيح
+        wrongCount++;
+      }
+
+      optionBtns.forEach(btn => btn.disabled = true);
+
+      setTimeout(() => {
+        current++;
+        if(current < questions.length) {
+          loadQuestion();
+        } else {
+          questionEl.style.display = "none";
+          document.querySelector(".options").style.display = "none";
+          resultEl.textContent = `Quiz Finished! Correct: ${correctCount}, Wrong: ${wrongCount}`;
+        }
+      }, 1000);
+    }
+
+    optionBtns.forEach((btn, i) => {
+      btn.addEventListener("click", () => checkAnswer(i));
+    });
+
+    loadQuestion();
+  </script>
+  <!-- ربط JavaScript -->
+  <script src="js/script.js"></script>
+</body>
+</html>

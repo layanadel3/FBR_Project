@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <link rel="stylesheet" href="AdminStyle.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Add a Question</h1>
+        <form id="questionForm">
+            <label>Question:</label>
+            <input type="text" id="questionText" required>
+
+            <label>Answer:</label>
+            <select id="answer" required>
+                <option value="">Select Answer</option>
+                <option value="True">True</option>
+                <option value="False">False</option>
+            </select>
+
+            <button type="submit">Add Question</button>
+        </form>
+
+        <h2>Added Questions</h2>
+        <ul id="questionList"></ul>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
