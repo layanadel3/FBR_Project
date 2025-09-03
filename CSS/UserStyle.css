@@ -1,47 +1,109 @@
-  body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 50px;
-      background-color: #3b0a4f;
-      color: white;
-    }
+:root{
+  --surface: rgba(255,255,255,.06);
+  --stroke:  rgba(255,255,255,.12);
+  --title-bg: rgba(0,0,0,.35);
+  --radius: 20px;
+}
 
-    #question {
-      font-size: 24px;
-      margin-bottom: 40px;
-      padding: 20px;
-      background: rgba(0,0,0,0.3);
-      border-radius: 10px;
-    }
+*,
+*::before,
+*::after{ box-sizing: border-box; }
 
-    .options {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
+body{
+  font-family: Arial, sans-serif;
+  text-align: center;
+  display: grid;
+  place-items: center;     
+  padding: clamp(16px, 3vw, 32px);  background-color: #3b0a4f;
+  color: #fff;
+}
 
-    .option-btn {
-      flex: 1 1 200px;
-      padding: 30px;
-      font-size: 18px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      color: #3b0a4f;
-      transition: 0.3s;
-    }
+/* ===== Card ===== */
+.quiz-card{
+  max-width: 1000px;
+  width: min(1000px, 92vw);
+  margin: 0 auto;
+  padding: clamp(20px, 2.4vw, 32px);  
+  background: var(--surface);
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius);
+  box-shadow: 0 20px 40px rgba(0,0,0,.25);
+  backdrop-filter: blur(6px);
+}
 
-    .option-btn:hover {
-      background-color: rgba(255,255,255,0.2);
-        color: #fff; 
+/* ===== Title ===== */
+.quiz-title{
+  margin: 0 0 clamp(12px, 2vh, 18px);
+  background: var(--title-bg);
+  color:#fff;
+  padding: 16px 20px;
+  border-radius: 14px;
+  font-size: clamp(12px, 1.8vw, 18px) clamp(16px, 2vw, 22px);
+  font-weight: clamp(22px, 3.2vw, 30px);
+}
 
-    }
+/* ===== Options grid ===== */
+.options{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 2vw, 20px);
+  margin: 12px 0 6px;
+}
 
-    .correct { background-color: #4CAF50 !important; }
-    .wrong { background-color: #F44336 !important; }
+/* ===== Buttons ===== */
+.option-btn{
+  position: relative; overflow: hidden; 
+  padding: 18px 22px;
+  font-size: 20px;
+  font-weight: 700;
+  background: #fff;
+  color: #4a148c;
+  border: 1px solid #eee;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0,0,0,.12);
+  transition: transform .18s, box-shadow .18s, border-color .18s, background .18s;
+}
+.option-btn:hover{
+  transform: translateY(-1px) scale(1.01);
+  box-shadow: 0 10px 24px rgba(0,0,0,.16);
+  border-color:#e2d8ff; background:#f7f3ff;
+}
+.option-btn:disabled{
+  opacity:.9; cursor:not-allowed; transform:none; box-shadow:none;
+}
 
-    #result {
-      margin-top: 30px;
-      font-size: 22px;
-    }
+/* ===== Feedback states ===== */
+
+.correct{ background:#e8f7ee !important; color:#146c2e !important; border:2px solid #34a853 !important; }
+.wrong  { background:#fde8e8 !important; color:#9f1239 !important; border:2px solid #ef4444 !important; }
+
+
+/* ===== Ripple / Animations ===== */
+.option-btn .ripple{
+  position:absolute; width:120px; height:120px; border-radius:50%;
+  background:#7E22CE; opacity:.35; transform:scale(0); pointer-events:none;
+  animation:ripple .6s ease-out forwards;
+}
+@keyframes ripple{ to{ transform:scale(3); opacity:0; } }
+
+.option-btn.pop{ animation:pop .28s ease; }
+@keyframes pop{ 50%{ transform:scale(1.06);} }
+
+.option-btn.shake{ animation:shake .35s ease; }
+@keyframes shake{
+  10%,90%{ transform: translateX(-2px); }
+  20%,80%{ transform: translateX( 4px); }
+  30%,50%,70%{ transform: translateX(-6px); }
+  40%,60%{ transform: translateX( 6px); }
+}
+
+/* ===== Result text ===== */
+#result{ margin-top: 12px; font-size: 18px; }
+
+/* ===== Mobile ===== */
+@media (max-width: 640px){
+  body{ padding: 20px; }
+  .quiz-card{ margin: 20px auto; padding: 16px; }
+  .options{ grid-template-columns: 1fr; }
+}

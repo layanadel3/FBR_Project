@@ -1,81 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quiz App</title>
-<link rel="stylesheet" href="../css/UserStyle.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="../css/UserStyle.css">
 
 </head>
+
 <body>
+    <main class="quiz-card">
+        <h2 id="question" class="quiz-title">Loading question...</h2>
 
-  <h2 id="question">Loading question...</h2>
+        <div class="options">
+            <button class="option-btn" id="opt1"></button>
+            <button class="option-btn" id="opt2"></button>
+        </div>
 
-  <div class="options">
-    <button class="option-btn" id="opt1"></button>
-    <button class="option-btn" id="opt2"></button>
-  </div>
+        <div id="result" aria-live="polite"></div>
+    </main>
 
-  <div id="result"></div>
+    <script>
+        const questions = [
+            { q: "Is fire hot?", options: ["Yes", "No"], correct: 0 },
+            { q: "Water freezes at 0°C?", options: ["Yes", "No"], correct: 0 }
+        ];
 
-  <script>
-    const questions = [
-      { q: "Is fire hot?", options: ["Yes","No"], correct: 0 },
-      { q: "Water freezes at 0°C?", options: ["Yes","No"], correct: 0 }
-    ];
+        let current = 0, correctCount = 0, wrongCount = 0, locked = false;
 
-    let current = 0;
-    let correctCount = 0;
-    let wrongCount = 0;
+        const questionEl = document.getElementById("question");
+        const resultEl = document.getElementById("result");
+        const optionBtns = [document.getElementById("opt1"), document.getElementById("opt2")];
 
-    const questionEl = document.getElementById("question");
-    const resultEl = document.getElementById("result");
-    const optionBtns = [
-      document.getElementById("opt1"),
-      document.getElementById("opt2"),
-    ];
-
-    function loadQuestion() {
-      const q = questions[current];
-      questionEl.textContent = q.q;
-      optionBtns.forEach((btn,i) => {
-        btn.textContent = q.options[i];
-        btn.className = "option-btn"; // إعادة ضبط اللون
-        btn.disabled = false;
-      });
-    }
-
-    function checkAnswer(index) {
-      const correctIndex = questions[current].correct;
-      if(index === correctIndex) {
-        optionBtns[index].classList.add("correct");
-        correctCount++;
-      } else {
-        optionBtns[index].classList.add("wrong");
-        optionBtns[correctIndex].classList.add("correct");
-        wrongCount++;
-      }
-
-      optionBtns.forEach(btn => btn.disabled = true);
-
-      setTimeout(() => {
-        current++;
-        if(current < questions.length) {
-          loadQuestion();
-        } else {
-          questionEl.style.display = "none";
-          document.querySelector(".options").style.display = "none";
-          resultEl.textContent = `Quiz Finished! Correct: ${correctCount}, Wrong: ${wrongCount}`;
+        function loadQuestion() {
+            const q = questions[current];
+            questionEl.textContent = q.q;
+            optionBtns.forEach((btn, i) => {
+                btn.textContent = q.options[i];
+                btn.className = "option-btn";
+                btn.disabled = false;
+            });
+            locked = false;
         }
-      }, 1000);
-    }
 
-    optionBtns.forEach((btn, i) => {
-      btn.addEventListener("click", () => checkAnswer(i));
-    });
+        function addRipple(btn, e) {
+            const r = document.createElement('span');
+            r.className = 'ripple';
+            const rect = btn.getBoundingClientRect();
+            const x = (e?.clientX ?? rect.left + rect.width / 2) - rect.left - 60;
+            const y = (e?.clientY ?? rect.top + rect.height / 2) - rect.top - 60;
+            r.style.left = x + 'px';
+            r.style.top = y + 'px';
+            btn.appendChild(r);
+            setTimeout(() => r.remove(), 650);
+        }
 
-    loadQuestion();
-  </script>
+        function checkAnswer(index, evt) {
+            if (locked) return;
+            locked = true;
 
+            addRipple(optionBtns[index], evt);
+            const correctIndex = questions[current].correct;
+
+            if (index === correctIndex) {
+                optionBtns[index].classList.add("correct", "pop");
+                setTimeout(() => optionBtns[index].classList.remove("pop"), 320);
+                correctCount++;
+            } else {
+                optionBtns[index].classList.add("wrong", "shake");
+                setTimeout(() => optionBtns[index].classList.remove("shake"), 380);
+                optionBtns[correctIndex].classList.add("correct", "pop");
+                setTimeout(() => optionBtns[correctIndex].classList.remove("pop"), 320);
+                wrongCount++;
+            }
+
+            optionBtns.forEach(btn => btn.disabled = true);
+
+            setTimeout(() => {
+                current++;
+                if (current < questions.length) {
+                    loadQuestion();
+                } else {
+                    questionEl.style.display = "none";
+                    document.querySelector(".options").style.display = "none";
+                    resultEl.textContent = `Quiz Finished! Correct: ${correctCount}, Wrong: ${wrongCount}`;
+                }
+            }, 1000);
+        }
+
+        optionBtns.forEach((btn, i) => {
+            btn.addEventListener("click", (e) => checkAnswer(i, e));
+        });
+
+        loadQuestion();
+    </script>
 </body>
+
 </html>

@@ -1,85 +1,121 @@
-     body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 50px;
-            background-color: #3b0a4f;
-            color: white;
-        }
+/* ====== Base ====== */
+:root{
+  --brand:#7E22CE;
+  --ring:rgba(126,34,206,.15);
+  --field-max:560px;
+  --field-h:48px;
+  --radius:12px;
+}
 
-        .options {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
+*,
+*::before,
+*::after { box-sizing: border-box; }
 
-        .option-btn {
-            flex: 1 1 200px;
-            padding: 30px;
-            font-size: 18px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            color: white;
-            transition: 0.3s;
-        }
+body{
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 50px;
+  background-color: #3b0a4f;
+  color: #fff;
+}
 
-        .correct { background-color: #4CAF50 !important; }
-        .wrong { background-color: #F44336 !important; }
+/* ====== Card ====== */
+.container{
+  background:#fff;
+  color:#111827;                
+  padding:28px 24px;
+  border-radius:20px;
+  box-shadow:0 12px 34px rgba(0,0,0,.18);
+  max-width:620px;
+  margin:40px auto;
+  text-align:center;
+  overflow:hidden;
+}
+.container h1{
+  margin:6px 0 18px;
+  color:#4a148c;
+  font-size:32px;
+  font-weight:800;
+}
 
-        #result {
-            margin-top: 30px;
-            font-size: 22px;
-        }
+/* ====== Form layout ====== */
+.container form{
+  display:grid;
+  gap:14px;
+  margin-top:6px;
+  justify-items:center;
+}
+.container label,
+.container input,
+.container select,
+.container button{
+  width:100%;
+  max-width:var(--field-max);
+  font-size:16px;
+  border-radius:var(--radius);
+  margin:0;
+}
 
-        /* CSS إضافي للـ form */
-        .container h1 {
-            margin-bottom: 20px;
-        }
+/* ====== Fields====== */
+.container label{
+  text-align:left;
+  font-weight:700;
+  color:#3b0764;
+}
+.container input,
+.container select{
+  height:var(--field-h);
+  padding:10px 14px;
+  background:#fff;
+  border:1.5px solid #D1D5DB;
+  outline:0;
+  transition:border-color .2s, box-shadow .2s, background-color .2s;
+}
+.container input:focus,
+.container select:focus{
+  border-color:var(--brand);
+  box-shadow:0 0 0 4px var(--ring);
+}
+.container input::placeholder{ color:#9ca3af; }
 
-        .container form {
-            margin-bottom: 40px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+/* Select arrow */
+.container select{
+  appearance:none; -webkit-appearance:none; -moz-appearance:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%237E22CE' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-repeat:no-repeat;
+  background-position:right 14px center;
+  background-size:16px;
+  padding-right:44px;
+}
 
-        .container label, 
-        .container input, 
-        .container select, 
-        .container button {
-            width: 100%;
-            max-width: 400px;
-            margin: 10px 0;
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            border: none;
-        }
+/* ====== Button ====== */
+.container button{
+  padding:12px 14px;
+  border:none;
+  font-weight:700;
+  color:#fff;
+  background:linear-gradient(90deg,#6a0dad,#8e24aa);
+  box-shadow:0 6px 18px rgba(0,0,0,.12);
+  transition:transform .15s, filter .2s, box-shadow .2s;
+}
+.container button:hover{
+  transform:translateY(-1px);
+  filter:brightness(1.05);
+  box-shadow:0 8px 22px rgba(0,0,0,.16);
+}
+#addBtn[disabled]{ opacity:.6; cursor:not-allowed; }
 
-        .container button {
-            background-color: #6a0dad;
-            color: white;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+/* ====== Messages ====== */
+.error{
+  color:#dc2626;
+  font-size:12px;
+  min-height:14px;         
+  text-align:left;
+  width:100%;
+  max-width:var(--field-max);
+}
 
-        .container button:hover {
-            background-color: #4b007a;
-        }
-
-        #questionList {
-            list-style-type: none;
-            padding: 0;
-            width: 100%;
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        #questionList li {
-            background: rgba(255,255,255,0.1);
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 5px;
-            text-align: left;
-        }
+/* ====== Responsive ====== */
+@media (max-width:640px){
+  body{ padding:24px; }
+}

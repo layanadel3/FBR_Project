@@ -10,22 +10,41 @@
 <body>
     <div class="container">
         <h1>Add a Question</h1>
-        <form id="questionForm">
-            <label>Question:</label>
-            <input type="text" id="questionText" required>
+       <form id="questionForm" novalidate>
+  <label for="questionText">Question</label>
+  <input type="text" id="questionText" placeholder="Type your question..." required aria-describedby="qError">
+  <small class="error" id="qError"></small>
 
-            <label>Answer:</label>
-            <select id="answer" required>
-                <option value="">Select Answer</option>
-                <option value="True">True</option>
-                <option value="False">False</option>
-            </select>
+  <label for="answer">Answer</label>
+  <select id="answer" required aria-describedby="aError">
+    <option value="">Select Answer</option>
+    <option value="True">True</option>
+    <option value="False">False</option>
+  </select>
+  <small class="error" id="aError"></small>
 
-            <button type="submit">Add Question</button>
-        </form>
-
+  <button type="submit" id="addBtn" disabled>Add Question</button>
+</form>
     </div>
 
-    <script src="script.js"></script>
+<script>
+  const qIn = document.getElementById('questionText');
+  const ans = document.getElementById('answer');
+  const btn = document.getElementById('addBtn');
+  const qErr= document.getElementById('qError');
+  const aErr= document.getElementById('aError');
+
+  function validate(){
+    const okQ = qIn.value.trim().length >= 3;  
+    const okA = !!ans.value;                   
+    qErr.textContent = okQ ? '' : 'Please enter a question (min 3 chars).';
+    aErr.textContent = okA ? '' : 'Please select an answer.';
+    btn.disabled = !(okQ && okA);
+  }
+
+  qIn.addEventListener('input',  validate);
+  ans.addEventListener('change', validate);
+  validate();
+</script>
 </body>
 </html>
