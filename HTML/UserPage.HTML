@@ -3,19 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Website</title>
-  <!-- ربط CSS -->
-  <link rel="stylesheet" href="css/style.css">
+  <title>Quiz App</title>
+<link rel="stylesheet" href="../css/UserStyle.css">
+
 </head>
 <body>
-  
+
   <h2 id="question">Loading question...</h2>
 
   <div class="options">
     <button class="option-btn" id="opt1"></button>
     <button class="option-btn" id="opt2"></button>
-    <button class="option-btn" id="opt3"></button>
-    <button class="option-btn" id="opt4"></button>
   </div>
 
   <div id="result"></div>
@@ -35,7 +33,6 @@
     const optionBtns = [
       document.getElementById("opt1"),
       document.getElementById("opt2"),
-     
     ];
 
     function loadQuestion() {
@@ -55,7 +52,7 @@
         correctCount++;
       } else {
         optionBtns[index].classList.add("wrong");
-        optionBtns[correctIndex].classList.add("correct"); // يظهر الصحيح
+        optionBtns[correctIndex].classList.add("correct");
         wrongCount++;
       }
 
@@ -79,7 +76,6 @@
 
     loadQuestion();
   </script>
-  <!-- ربط JavaScript -->
-  <script src="js/script.js"></script>
+
 </body>
 </html>
